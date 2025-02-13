@@ -3,18 +3,20 @@ package com.uajj.Tests.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uajj.Tests.model.entities.Instrument;
 import com.uajj.Tests.repository.InstrumentRepository;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
 @Service
 public class InstrumentService {
 
 	private InstrumentRepository repository;
 
-	@Autowired
+	
 	public InstrumentService(InstrumentRepository repository) {
 		this.repository = repository;
 	}
@@ -35,6 +37,10 @@ public class InstrumentService {
 
 	public Instrument findById(UUID id) {
 		return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Instrument with the specified ID not found"));
+	}
+	
+	public List<Instrument> findAll() {
+		return repository.findAll();
 	}
 
 }

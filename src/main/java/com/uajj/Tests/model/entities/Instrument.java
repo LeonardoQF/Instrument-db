@@ -12,7 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import lombok.ToString;
 
+@ToString
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Instrument {

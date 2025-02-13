@@ -3,7 +3,6 @@ package com.uajj.Tests.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uajj.Tests.model.entities.ClassicalGuitar;
@@ -16,7 +15,6 @@ public class ClassicalGuitarService {
 
 	private ClassicalGuitarRepository repository;
 
-	@Autowired
 	public ClassicalGuitarService(ClassicalGuitarRepository repository) {
 		this.repository = repository;
 	}
