@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.uajj.Tests.model.entities.Instrument;
+import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.repository.InstrumentRepository;
 
 import jakarta.transaction.Transactional;
@@ -41,6 +42,14 @@ public class InstrumentService {
 	
 	public List<Instrument> findAll() {
 		return repository.findAll();
+	}
+	
+	public List<Instrument> findAllByType(InstrumentType type) {
+		return repository.findByType(type);
+	}
+	
+	public List<Instrument> searchByAnyText(String text) {
+		return repository.searchByAnyText(text);
 	}
 
 }

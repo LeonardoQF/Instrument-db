@@ -2,6 +2,7 @@ package com.uajj.Tests.model.entities;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.model.entities.enums.StringMaterial;
 
@@ -10,17 +11,19 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Entity
-public class ClassicalGuitar extends Instrument {
-
+@JsonTypeName(value = "GUITAR")
+public class Guitar extends Instrument {
+	private static final long serialVersionUID = 5023926121064137823L;
+	
 	private Integer numberOfStrings;
 	private String wood;
 	@Enumerated(EnumType.STRING)
 	private StringMaterial stringMaterial;
 
-	public ClassicalGuitar() {
+	public Guitar() {
 	}
 
-	public ClassicalGuitar(UUID id, String name, String brand, InstrumentType type, Integer numberOfStrings,
+	public Guitar(UUID id, String name, String brand, InstrumentType type, Integer numberOfStrings,
 			String wood, StringMaterial stringMaterial) {
 		super(id, name, brand, type);
 		this.numberOfStrings = numberOfStrings;

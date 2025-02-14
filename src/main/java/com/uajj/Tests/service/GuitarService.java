@@ -5,22 +5,22 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.uajj.Tests.model.entities.ClassicalGuitar;
-import com.uajj.Tests.repository.ClassicalGuitarRepository;
+import com.uajj.Tests.model.entities.Guitar;
+import com.uajj.Tests.repository.GuitarRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ClassicalGuitarService {
+public class GuitarService {
 
-	private ClassicalGuitarRepository repository;
+	private GuitarRepository repository;
 
-	public ClassicalGuitarService(ClassicalGuitarRepository repository) {
+	public GuitarService(GuitarRepository repository) {
 		this.repository = repository;
 	}
 
 	@Transactional
-	public ClassicalGuitar save(ClassicalGuitar guitar) {
+	public Guitar save(Guitar guitar) {
 		if (guitar == null)
 			throw new IllegalArgumentException("Instrument cannot be null");
 
@@ -28,12 +28,12 @@ public class ClassicalGuitarService {
 	}
 
 	@Transactional
-	public List<ClassicalGuitar> saveAll(List<ClassicalGuitar> guitars) {
+	public List<Guitar> saveAll(List<Guitar> guitars) {
 		return repository.saveAll(guitars);
 	}
 
-	public ClassicalGuitar findById(UUID id) {
-		ClassicalGuitar foundGuitar = repository.findById(id)
+	public Guitar findById(UUID id) {
+		Guitar foundGuitar = repository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Guitar with the specified ID not found"));
 
 		return foundGuitar;

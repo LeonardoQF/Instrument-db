@@ -1,7 +1,11 @@
 package com.uajj.Tests.model.entities;
 
+import java.io.Serializable;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 
 import jakarta.persistence.Entity;
@@ -16,8 +20,15 @@ import lombok.ToString;
 
 @ToString
 @Entity
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+	@JsonSubTypes.Type(value = Guitar.class, name = "GUITAR"),
+	@JsonSubTypes.Type(value = Piano.class, name = "PIANO")
+})
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Instrument {
+public abstract class Instrument implements Serializable {
+	private static final long serialVersionUID = 2275576575417265514L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -25,6 +36,7 @@ public abstract class Instrument {
 	private String name;
 	private String brand;
 
+	@JsonIgnore //Because JsonTypeInfo will already generate this in the JSON, so not ignoring this would make two of the same "type" fields.
 	@Enumerated(EnumType.STRING)
 	private InstrumentType type;
 

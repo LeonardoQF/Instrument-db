@@ -2,6 +2,7 @@ package com.uajj.Tests.model.entities;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.model.entities.enums.PianoType;
 
@@ -10,7 +11,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Entity
+@JsonTypeName("PIANO")
 public class Piano extends Instrument {
+	private static final long serialVersionUID = 2783973962458540615L;
 
 	private Integer numberOfKeys;
 	@Enumerated(EnumType.STRING)
@@ -43,11 +46,8 @@ public class Piano extends Instrument {
 
 	@Override
 	public String toString() {
-		return "PIANO[" + "id = " + getId() + ", type = " + getType() + ", name = " + getName() +  ", brand = " + getBrand() + ", number of keys = " + getNumberOfKeys() + ", piano type = " + getPianoType() + "]";
+		return "PIANO[" + "id = " + getId() + ", type = " + getType() + ", name = " + getName() + ", brand = "
+				+ getBrand() + ", number of keys = " + getNumberOfKeys() + ", piano type = " + getPianoType() + "]";
 	}
-	
-	
-	
-	
 
 }
