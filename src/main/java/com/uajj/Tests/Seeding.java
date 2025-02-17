@@ -4,12 +4,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import com.uajj.Tests.model.entities.Guitar;
+import com.uajj.Tests.model.entities.ElectricGuitar;
 import com.uajj.Tests.model.entities.Instrument;
 import com.uajj.Tests.model.entities.Piano;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.model.entities.enums.PianoType;
-import com.uajj.Tests.model.entities.enums.StringMaterial;
 import com.uajj.Tests.service.InstrumentService;
 
 @Component
@@ -23,16 +22,15 @@ public class Seeding implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		Instrument g1 = new Guitar(null, "Performance pro", "Giannini", InstrumentType.GUITAR, 6,
-				"Mahogany", StringMaterial.STEEL);
+		Instrument eg1 = new ElectricGuitar(null, "Les Paul Custom", "Gibson", InstrumentType.GUITAR, 6, "Mahogany", 22, "Black", "Basswood", "China", "2 factory issue humbuckers", true, "4", "silver", "Les Paul");
 		
 		Instrument p1 = new Piano(null, "Player 3000", "Fritz Dobbert", InstrumentType.PIANO, 88, PianoType.UPRIGHT);
 		
-		service.save(g1);
+		service.save(eg1);
 		
 		service.save(p1);
 		
-		Instrument savedGuitar = service.findById(g1.getId());
+		Instrument savedGuitar = service.findById(eg1.getId());
 		Instrument savedPiano = service.findById(p1.getId());
 		
 		System.out.println(savedGuitar + "\n" + savedPiano);
