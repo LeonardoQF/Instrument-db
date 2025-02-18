@@ -20,7 +20,6 @@ import lombok.ToString;
 
 @ToString
 @Entity
-
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
 	@JsonSubTypes.Type(value = Guitar.class, name = "GUITAR"),

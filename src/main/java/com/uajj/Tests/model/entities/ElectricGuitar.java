@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 public class ElectricGuitar extends Guitar {
 
 	private static final long serialVersionUID = 4530377743915785269L;
+	private final String stringMaterial = "Steel";
 
 	private String pickups;
 	private Boolean hasWhammyBar;
@@ -18,12 +19,8 @@ public class ElectricGuitar extends Guitar {
 	private String bodyShape;
 
 	public ElectricGuitar() {
-		
+
 	}
-	
-	
-	
-	
 
 	public ElectricGuitar(UUID id, String name, String brand, InstrumentType type, Integer numberOfStrings, String wood,
 			Integer numberOfFrets, String colour, String neckWood, String madeIn, String pickups, Boolean hasWhammyBar,
@@ -35,10 +32,6 @@ public class ElectricGuitar extends Guitar {
 		this.tuningPegMaterial = tuningPegMaterial;
 		this.bodyShape = bodyShape;
 	}
-
-
-
-
 
 	public String getPickups() {
 		return pickups;
@@ -79,4 +72,9 @@ public class ElectricGuitar extends Guitar {
 	public void setBodyShape(String bodyShape) {
 		this.bodyShape = bodyShape;
 	}
+
+	public String getStringmaterial() {
+		return this.stringMaterial;
+	}
+
 }

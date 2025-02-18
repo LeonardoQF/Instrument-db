@@ -10,16 +10,15 @@ import jakarta.persistence.Entity;
 public class AcousticGuitar extends Guitar {
 
 	private static final long serialVersionUID = 6588876732999960716L;
-	
-	private Boolean hasBuiltInTuner;
-	private String pickups; //Create a Pickup class later?
-	private String bodyShape;
-	
-	public AcousticGuitar() {
-		
-	}
+	private final String StringMaterial = "Steel";
 
-	
+	private Boolean hasBuiltInTuner;
+	private String pickups; // Create a Pickup class later?
+	private String bodyShape;
+
+	public AcousticGuitar() {
+
+	}
 
 	public AcousticGuitar(UUID id, String name, String brand, InstrumentType type, Integer numberOfStrings, String wood,
 			Integer numberOfFrets, String colour, String neckWood, String madeIn, Boolean hasBuiltInTuner,
@@ -29,8 +28,6 @@ public class AcousticGuitar extends Guitar {
 		this.pickups = pickups;
 		this.bodyShape = bodyShape;
 	}
-
-
 
 	public Boolean getHasBuiltInTuner() {
 		return hasBuiltInTuner;
@@ -55,10 +52,9 @@ public class AcousticGuitar extends Guitar {
 	public void setBodyShape(String bodyShape) {
 		this.bodyShape = bodyShape;
 	}
-	
-	
-	
-	
-	
+
+	public String getStringmaterial() {
+		return StringMaterial;
+	}
 
 }

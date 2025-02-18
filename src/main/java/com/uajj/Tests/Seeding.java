@@ -22,7 +22,7 @@ public class Seeding implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		Instrument eg1 = new ElectricGuitar(null, "Les Paul Custom", "Gibson", InstrumentType.GUITAR, 6, "Mahogany", 22, "Black", "Basswood", "China", "2 factory issue humbuckers", true, "4", "silver", "Les Paul");
+		Instrument eg1 = new ElectricGuitar(null, "Les Paul Custom", "Gibson", InstrumentType.GUITAR, 6, "Mahogany", 22, "Black", "Basswood", "China", "2 factory issue humbuckers", false, "4", "Silver", "Les Paul");
 		
 		Instrument p1 = new Piano(null, "Player 3000", "Fritz Dobbert", InstrumentType.PIANO, 88, PianoType.UPRIGHT);
 		
