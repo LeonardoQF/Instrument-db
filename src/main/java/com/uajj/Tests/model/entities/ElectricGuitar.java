@@ -12,7 +12,7 @@ public class ElectricGuitar extends Guitar {
 	private static final long serialVersionUID = 4530377743915785269L;
 	private final String stringMaterial = "Steel";
 
-	private String pickups;
+	private String pickups; //TODO Create Pickup class
 	private Boolean hasWhammyBar;
 	private String knobs;
 	private String tuningPegMaterial;
@@ -73,7 +73,7 @@ public class ElectricGuitar extends Guitar {
 		this.bodyShape = bodyShape;
 	}
 
-	public String getStringmaterial() {
+	public String getStringMaterial() {
 		return this.stringMaterial;
 	}
 

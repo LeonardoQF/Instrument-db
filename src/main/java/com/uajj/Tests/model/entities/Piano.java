@@ -40,7 +40,7 @@ public class Piano extends Instrument {
 		return pianoType;
 	}
 
-	public void setType(PianoType type) {
+	public void setPianoType(PianoType type) {
 		this.pianoType = type;
 	}
 

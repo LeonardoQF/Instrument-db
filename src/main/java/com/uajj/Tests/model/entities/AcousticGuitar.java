@@ -53,7 +53,7 @@ public class AcousticGuitar extends Guitar {
 		this.bodyShape = bodyShape;
 	}
 
-	public String getStringmaterial() {
+	public String getStringMaterial() {
 		return StringMaterial;
 	}
 
