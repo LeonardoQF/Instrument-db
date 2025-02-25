@@ -22,18 +22,18 @@ import com.uajj.Tests.service.InstrumentService;
 @RestController
 @RequestMapping(path = "/instruments")
 public class InstrumentController {
-	
+
 	InstrumentService service;
-	
+
 	public InstrumentController(InstrumentService service) {
 		this.service = service;
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<List<Instrument>> getAllInstruments() {
 		return ResponseEntity.ok(service.findAll());
 	}
-	
+
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Instrument> getInstrumentById(@PathVariable(name = "id") String id) {
 		Instrument foundInstrument = service.findById(UUID.fromString(id));
@@ -41,27 +41,25 @@ public class InstrumentController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Instrument> addInstrument(@RequestBody(required = true) Instrument instrument, MultipartFile images) {
-		//TODO Image upload logic
-		
+	public ResponseEntity<Instrument> addInstrument(@RequestBody(required = true) Instrument instrument) {
+
 		service.save(instrument);
-		
-		URI uri = (ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(instrument.getId().toString()).toUri());
-		
+
+		URI uri = (ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(instrument.getId().toString()).toUri());
+
 		return ResponseEntity.created(uri).body(instrument);
 	}
-	
+
 	@GetMapping("/filter")
 	public List<Instrument> getAllInstrumentsByType(@RequestParam(required = true, name = "type") String type) {
 		String upperCaseType = type.toUpperCase();
 		return service.findAllByType(InstrumentType.valueOf(upperCaseType));
 	}
-	
+
 	@GetMapping("/search")
 	public List<Instrument> search(@RequestParam(required = true, name = "text") String text) {
 		return service.searchByAnyText(text);
 	}
-	
-	
 
 }
