@@ -2,7 +2,9 @@ package com.uajj.Tests.model.entities;
 
 import java.util.UUID;
 
+import com.uajj.Tests.model.entities.enums.GuitarType;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
+import com.uajj.Tests.model.entities.enums.StringMaterial;
 
 import jakarta.persistence.Entity;
 
@@ -10,7 +12,7 @@ import jakarta.persistence.Entity;
 public class AcousticGuitar extends Guitar {
 
 	private static final long serialVersionUID = 6588876732999960716L;
-	private final String StringMaterial = "Steel";
+	private final StringMaterial stringMaterial = StringMaterial.STEEL;
 
 	private Boolean hasBuiltInTuner;
 	private String pickups; // Create a Pickup class later?
@@ -27,6 +29,8 @@ public class AcousticGuitar extends Guitar {
 		this.hasBuiltInTuner = hasBuiltInTuner;
 		this.pickups = pickups;
 		this.bodyShape = bodyShape;
+		
+		this.setGuitarType(GuitarType.ACOUSTIC);
 	}
 
 	public Boolean getHasBuiltInTuner() {
@@ -53,8 +57,8 @@ public class AcousticGuitar extends Guitar {
 		this.bodyShape = bodyShape;
 	}
 
-	public String getStringMaterial() {
-		return StringMaterial;
+	public StringMaterial getStringMaterial() {
+		return stringMaterial;
 	}
 
 }

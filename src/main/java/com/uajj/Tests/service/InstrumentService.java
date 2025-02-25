@@ -17,7 +17,6 @@ public class InstrumentService {
 
 	private InstrumentRepository repository;
 
-	
 	public InstrumentService(InstrumentRepository repository) {
 		this.repository = repository;
 	}
@@ -37,17 +36,18 @@ public class InstrumentService {
 	}
 
 	public Instrument findById(UUID id) {
-		return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Instrument with the specified ID not found"));
+		return repository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Instrument with the specified ID not found"));
 	}
-	
+
 	public List<Instrument> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public List<Instrument> findAllByType(InstrumentType type) {
 		return repository.findByType(type);
 	}
-	
+
 	public List<Instrument> searchByAnyText(String text) {
 		return repository.searchByAnyText(text);
 	}

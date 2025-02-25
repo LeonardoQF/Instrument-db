@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.uajj.Tests.model.entities.enums.GuitarType;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 
 import jakarta.persistence.Entity;
@@ -21,6 +22,7 @@ public abstract class Guitar extends Instrument {
 	private static final long serialVersionUID = 5023926121064137823L;
 
 	private Integer numberOfStrings;
+	private GuitarType guitarType;
 	private String wood;
 	private Integer numberOfFrets;
 	private String colour;
@@ -89,7 +91,13 @@ public abstract class Guitar extends Instrument {
 	public void setMadeIn(String madeIn) {
 		this.madeIn = madeIn;
 	}
-
+	
+	public GuitarType getGuitarType() {
+		return guitarType;
+	}
+	public void setGuitarType(GuitarType guitarType) {
+		this.guitarType = guitarType;
+	}
 	@Override
 	public String toString() {
 		return "ClassicalGuitar [NumberOfStrings()=" + getNumberOfStrings() + ", Wood=" + getWood()
