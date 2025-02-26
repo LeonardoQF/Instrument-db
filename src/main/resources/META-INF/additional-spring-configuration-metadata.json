@@ -1,0 +1,10 @@
+{"properties": [{
+  "name": "storage.path-name",
+  "type": "java.lang.String",
+  "description": "The fileSystem path in which the storage will be created."
+},
+{
+"name": "storage",
+"description": "property for manipulating storage creation settings."
+}
+]}
