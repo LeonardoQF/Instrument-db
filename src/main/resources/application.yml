@@ -12,6 +12,10 @@ spring:
       path: /db
   jpa:
     show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      
     
 storage:
   pathName: D:\instrument-db_storage\images

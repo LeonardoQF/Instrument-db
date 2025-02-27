@@ -13,8 +13,10 @@ public interface StorageService {
 	
 	Path createFolder(Instrument instrument);
 	
-	void storeFile(MultipartFile file);
+	void storeFile(MultipartFile file, Instrument instrument);
 	
 	Resource getAsResource(String filename);
+
+	
 
 }

@@ -14,6 +14,7 @@ import com.uajj.Tests.config.StorageProperties;
 import com.uajj.Tests.model.entities.Instrument;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.service.exceptions.StorageAlreadyExistsException;
+import com.uajj.Tests.service.exceptions.StorageException;
 import com.uajj.Tests.service.interfaces.StorageService;
 
 @Service
@@ -39,8 +40,11 @@ public class ImageStorageService implements StorageService {
 	}
 
 	/**
-	 * Checks if the storage directory exists, creating it along with folders for
-	 * each InstrumentType within it, if not.
+	 * Creates the storage directory and its subdirectories. If the directory
+	 * already exists, creation is skipped and nothing gets created. <br>
+	 * The amount and name of the created subdirectories are based on the
+	 * InstrumentType enum. For each value present in it, a subdirectory bearing its
+	 * same name will be created.
 	 */
 	@Override
 	public void init() {
@@ -67,8 +71,23 @@ public class ImageStorageService implements StorageService {
 	}
 
 	@Override
-	public void storeFile(MultipartFile file) {
-		// TODO Auto-generated method stub
+	public void storeFile(MultipartFile file, Instrument instrument) {
+		try {
+
+			if (file.isEmpty())
+				throw new StorageException("File cannot be empty");
+
+			Path destinationPath = createFolder(instrument).resolve(file.getName());
+
+			System.out.println("Destination path for testing: " + destinationPath);
+
+			file.transferTo(destinationPath);
+
+		} catch (IOException e) {
+			throw new RuntimeException("Error creating file: " + e);
+		} catch (StorageAlreadyExistsException e) {
+			System.out.println(e);
+		}
 
 	}
 
@@ -80,6 +99,7 @@ public class ImageStorageService implements StorageService {
 
 	/**
 	 * Creates a folder whose name will be the same as the instrument's id.
+	 * 
 	 * @param instrument - the instrument to get the id from.
 	 * @return The path in which the folder was created.
 	 */
@@ -100,23 +120,21 @@ public class ImageStorageService implements StorageService {
 
 					Path createdInstrumentImageFolderPath = equivalentInstrumentTypePath.resolve(folderToBeCreatedName);
 
-					//Checks if the folder has already been created 
+					// Checks if the folder has already been created and returns the existent path if it does
 					if (Files.exists(createdInstrumentImageFolderPath)) {
-						throw new StorageAlreadyExistsException("Folder for the given instrument already exists, skipping");
+						System.out.println("Folder for the provided instrument already exists. Skipping");
+						return createdInstrumentImageFolderPath;
 					}
 					Files.createDirectories(createdInstrumentImageFolderPath);
 					return createdInstrumentImageFolderPath;
 				}
 			}
-			
+
 			throw new IllegalArgumentException("No such folder for InstrumentType " + instrument.getType().toString());
 
 		} catch (IOException e) {
 			throw new RuntimeException("Error while creating folder: " + e);
-		
-		} catch (StorageAlreadyExistsException e) { 
-			System.out.println(e.getMessage());
-			return null; //Not a fatal error, so just returning null is enough.
+
 		}
 	}
 
