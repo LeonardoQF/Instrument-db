@@ -80,5 +80,27 @@ public abstract class Instrument implements Serializable {
 	public void setType(InstrumentType type) {
 		this.type = type;
 	}
+	
+	public static Instrument fromInstrumentType(InstrumentType type) {
+		
+		switch(type) {
+		case KEYS:
+			return new Piano();
+		case STRINGED:
+			return new Guitar();
+		case BRASS:
+			//TODO return new BrassInstrument
+		case ELECTRONIC:
+			//TODO return new ElectronicInstrument
+		case PERCUSSION:
+			//TODO return new PercussionInstrument
+		case WOODWIND:
+			//TODO return new WoodwindInstrument
+		default:
+			throw new IllegalArgumentException("Provided InstrumentType does not exist");
+			
+		}
+		
+	}
 
 }

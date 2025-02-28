@@ -12,8 +12,7 @@ public class StorageProperties {
 	@Primary
 	@Bean
 	static StorageProperties getDefaultProperties() {
-		return new StorageProperties();
-		
+		return new StorageProperties();	
 	}
 	
 	private String pathName;

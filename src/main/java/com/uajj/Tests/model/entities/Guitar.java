@@ -2,23 +2,15 @@ package com.uajj.Tests.model.entities;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.uajj.Tests.model.entities.enums.GuitarType;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
 
 @Entity
 @JsonTypeName(value = "GUITAR")
-@JsonSubTypes({
-	@JsonSubTypes.Type(value = ElectricGuitar.class, name = "ELECTRIC_GUITAR"),
-	@JsonSubTypes.Type(value = AcousticGuitar.class, name = "ACOUSTIC_GUITAR"),
-	@JsonSubTypes.Type(value = ClassicalGuitar.class, name = "CLASSICAL_GUITAR")
-})
-@Inheritance
-public abstract class Guitar extends Instrument {
+public class Guitar extends Instrument {
 	private static final long serialVersionUID = 5023926121064137823L;
 
 	private Integer numberOfStrings;

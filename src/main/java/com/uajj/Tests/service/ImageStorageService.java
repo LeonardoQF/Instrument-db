@@ -28,11 +28,7 @@ public class ImageStorageService implements StorageService {
 
 	public ImageStorageService(StorageProperties properties) {
 		if (properties.getPathName().trim().length() == 0) {
-			throw new RuntimeException(
-					"File upload location is empty."); /*
-														 * TODO Temporary RuntimeException, a more // specialized one
-														 * will be created in the // future.
-														 */
+			throw new StorageException("File upload location is empty");
 		}
 
 		this.rootFolderLocation = Paths.get(properties.getPathName());
@@ -77,7 +73,7 @@ public class ImageStorageService implements StorageService {
 			if (file.isEmpty())
 				throw new StorageException("File cannot be empty");
 
-			Path destinationPath = createFolder(instrument).resolve(file.getName());
+			Path destinationPath = createFolder(instrument).resolve(file.getOriginalFilename());
 
 			System.out.println("Destination path for testing: " + destinationPath);
 
@@ -120,7 +116,10 @@ public class ImageStorageService implements StorageService {
 
 					Path createdInstrumentImageFolderPath = equivalentInstrumentTypePath.resolve(folderToBeCreatedName);
 
-					// Checks if the folder has already been created and returns the existent path if it does
+					/*
+					 * Checks if the folder has already been created and returns the existent path
+					 * if it does
+					 */
 					if (Files.exists(createdInstrumentImageFolderPath)) {
 						System.out.println("Folder for the provided instrument already exists. Skipping");
 						return createdInstrumentImageFolderPath;
