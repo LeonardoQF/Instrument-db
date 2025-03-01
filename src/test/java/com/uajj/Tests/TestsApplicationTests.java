@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.uajj.Tests.model.entities.Guitar;
 import com.uajj.Tests.model.entities.Instrument;
-import com.uajj.Tests.model.entities.Piano;
+import com.uajj.Tests.model.entities.KeysInstrument;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.model.entities.enums.PianoType;
 import com.uajj.Tests.service.ImageStorageService;
@@ -34,9 +34,12 @@ class TestsApplicationTests {
 	@Test
 	void folderCreationTest() {
 
-		Instrument instrument = new Guitar(UUID.fromString("84d11cc7-7e15-4b49-9e25-b2a319f15090"),
-				"Performance GGC plus", "Giannini", InstrumentType.STRINGED, 6, "Mahogany", 24, "Red Satin", "Oak",
-				"China");
+		/*Instrument instrument = new Guitar(UUID.fromString("84d11cc7-7e15-4b49-9e25-b2a319f15090"),
+				"Performance GGC plus", "Giannini", InstrumentType.STRINGS, 6, GuitarType.ACOUSTIC ,"Mahogany", StringMaterial.STEEL , 24, false, "Red Satin", "Oak",
+				"China");*/
+		
+		Instrument instrument = new Guitar();
+				
 
 		Path createdFolder = storageService.createFolder(instrument);
 
@@ -57,7 +60,7 @@ class TestsApplicationTests {
 
 	@Test
 	void createImageInCorrectInstrumentFolderTest() throws IOException {
-		Instrument instrument = new Piano(UUID.fromString("5952bdb6-c035-438c-970d-18952e561e3d"), "DGX-670", "YAMAHA",
+		Instrument instrument = new KeysInstrument(UUID.fromString("5952bdb6-c035-438c-970d-18952e561e3d"), "DGX-670", "YAMAHA",
 				InstrumentType.KEYS, 88, PianoType.DIGITAL);
 
 		Path imageToSavePath = Paths.get("D:\\instrument-db_storage\\test_images\\DGX-670_image.jpg");

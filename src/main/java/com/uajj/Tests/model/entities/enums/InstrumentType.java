@@ -1,10 +1,10 @@
 package com.uajj.Tests.model.entities.enums;
 
 public enum InstrumentType {
-	STRINGED,
+	STRINGS,
 	WOODWIND,
 	BRASS,
 	PERCUSSION,
-	ELECTRONIC,
+	OTHER,
 	KEYS
 }

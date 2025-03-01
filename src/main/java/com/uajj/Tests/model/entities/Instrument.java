@@ -20,10 +20,25 @@ import lombok.ToString;
 
 @ToString
 @Entity
+
+/**
+ * What @JsonTypeInfo and @JsonSubtypes do is transform the JSON into an object
+ * based on what the "type" value is. As Instrument is abstract, sending a JSON
+ * through to controller would try to instantiate an Instrument object, which is
+ * not possible. If the instrument's type is STRING, however, a new
+ * StringInstrument object will be instantiated, which will work because
+ * StringInstrument is a concrete class.
+ */
+
+//TODO fix empty type name upon request
+
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-	@JsonSubTypes.Type(value = Guitar.class, name = "GUITAR"),
-	@JsonSubTypes.Type(value = Piano.class, name = "PIANO")
+@JsonSubTypes({ @JsonSubTypes.Type(value = StringInstrument.class, name = "STRING"),
+		@JsonSubTypes.Type(value = KeysInstrument.class, name = "KEYS"),
+		@JsonSubTypes.Type(value = PercussionInstrument.class, name = "PERCUSSION"),
+		@JsonSubTypes.Type(value = WoodwindInstrument.class, name = "WOODWIND"),
+		@JsonSubTypes.Type(value = BrassInstrument.class, name = "BRASS"),
+		@JsonSubTypes.Type(value = Guitar.class, name = "GUITAR")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Instrument implements Serializable {
@@ -35,7 +50,8 @@ public abstract class Instrument implements Serializable {
 	private String name;
 	private String brand;
 
-	@JsonIgnore //Because JsonTypeInfo will already generate this in the JSON, so not ignoring this would make two of the same "type" fields.
+	@JsonIgnore // Because JsonTypeInfo will already generate this in the JSON, so not ignoring
+				// this would make two of the same "type" fields.
 	@Enumerated(EnumType.STRING)
 	private InstrumentType type;
 
@@ -80,27 +96,27 @@ public abstract class Instrument implements Serializable {
 	public void setType(InstrumentType type) {
 		this.type = type;
 	}
-	
-	public static Instrument fromInstrumentType(InstrumentType type) {
-		
-		switch(type) {
+
+	public static final Instrument fromInstrumentType(InstrumentType type) {
+
+		switch (type) {
 		case KEYS:
-			return new Piano();
-		case STRINGED:
+			return new KeysInstrument();
+		case STRINGS:
 			return new Guitar();
 		case BRASS:
-			//TODO return new BrassInstrument
-		case ELECTRONIC:
-			//TODO return new ElectronicInstrument
+			// TODO return new BrassInstrument
+		case OTHER:
+			// TODO return new OtherInstrument
 		case PERCUSSION:
-			//TODO return new PercussionInstrument
+			// TODO return new PercussionInstrument
 		case WOODWIND:
-			//TODO return new WoodwindInstrument
+			// TODO return new WoodwindInstrument
 		default:
 			throw new IllegalArgumentException("Provided InstrumentType does not exist");
-			
+
 		}
-		
+
 	}
 
 }

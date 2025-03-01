@@ -41,7 +41,7 @@ public class InstrumentController {
 	
 	@PostMapping
 	public ResponseEntity<Instrument> addInstrument(@RequestBody(required = true) Instrument instrument) {
-
+		System.out.println("TESTE TIPO:  " + instrument.getType());
 		service.save(instrument);
 
 		URI uri = (ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")

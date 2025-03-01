@@ -1,8 +1,9 @@
 package com.uajj.Tests.model.entities.enums;
 
 public enum PianoType {
-	GRAND,
-	UPRIGHT,
+	ACOUSTIC,
 	ELECTRIC,
-	DIGITAL
+	DIGITAL,
+	GRAND,
+	UPRIGHT
 }
