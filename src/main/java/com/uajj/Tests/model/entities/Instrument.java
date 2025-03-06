@@ -3,11 +3,11 @@ package com.uajj.Tests.model.entities;
 import java.io.Serializable;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,16 +30,14 @@ import lombok.ToString;
  * StringInstrument is a concrete class.
  */
 
-//TODO fix empty type name upon request
+//TODO instrument subtypes instantiation
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
 @JsonSubTypes({ @JsonSubTypes.Type(value = StringInstrument.class, name = "STRING"),
 		@JsonSubTypes.Type(value = KeysInstrument.class, name = "KEYS"),
 		@JsonSubTypes.Type(value = PercussionInstrument.class, name = "PERCUSSION"),
 		@JsonSubTypes.Type(value = WoodwindInstrument.class, name = "WOODWIND"),
-		@JsonSubTypes.Type(value = BrassInstrument.class, name = "BRASS"),
-		@JsonSubTypes.Type(value = Guitar.class, name = "GUITAR")
-})
+		@JsonSubTypes.Type(value = BrassInstrument.class, name = "BRASS") })
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Instrument implements Serializable {
 	private static final long serialVersionUID = 2275576575417265514L;
@@ -50,9 +48,8 @@ public abstract class Instrument implements Serializable {
 	private String name;
 	private String brand;
 
-	@JsonIgnore // Because JsonTypeInfo will already generate this in the JSON, so not ignoring
-				// this would make two of the same "type" fields.
 	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
 	private InstrumentType type;
 
 	public Instrument() {
@@ -102,7 +99,7 @@ public abstract class Instrument implements Serializable {
 		switch (type) {
 		case KEYS:
 			return new KeysInstrument();
-		case STRINGS:
+		case STRING:
 			return new Guitar();
 		case BRASS:
 			// TODO return new BrassInstrument

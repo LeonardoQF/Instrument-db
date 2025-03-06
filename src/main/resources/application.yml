@@ -18,7 +18,7 @@ spring:
       
     
 storage:
-  pathName: D:\instrument-db_storage\images
+  pathName: C:\instrument-db_storage\images
   
   
       

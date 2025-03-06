@@ -62,7 +62,7 @@ public class ImageStorageService implements StorageService {
 		} catch (StorageAlreadyExistsException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
-			System.out.println("Storage could not be created.");
+			System.out.println("Storage could not be created: " + e);
 		}
 	}
 
