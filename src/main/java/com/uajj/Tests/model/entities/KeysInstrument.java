@@ -27,10 +27,14 @@ public class KeysInstrument extends Instrument {
 	}
 
 	public KeysInstrument(UUID id, String name, String brand, InstrumentType type, Integer numberOfKeys,
-			PianoType pianoType) {
+			PianoType pianoType, Integer octaves, Boolean hammerAction, Boolean pedalSupport, String tuningSystem) {
 		super(id, name, brand, type);
 		this.numberOfKeys = numberOfKeys;
 		this.pianoType = pianoType;
+		this.octaves = octaves;
+		this.hammerAction = hammerAction;
+		this.pedalSupport = pedalSupport;
+		this.tuningSystem = tuningSystem;
 	}
 
 	public Integer getNumberOfKeys() {

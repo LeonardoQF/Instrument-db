@@ -2,17 +2,18 @@ package com.uajj.Tests.model.entities;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.uajj.Tests.model.entities.enums.GuitarType;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.model.entities.enums.StringMaterial;
+import com.uajj.Tests.util.StringInstrumentDeserializer;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Entity
-@JsonTypeInfo(use = Id.NAME, include = As.EXISTING_PROPERTY, property = "")
+@JsonDeserialize(using = StringInstrumentDeserializer.class)
 public class StringInstrument extends Instrument {
 
 	private static final long serialVersionUID = 8570137552931555093L;
@@ -21,18 +22,20 @@ public class StringInstrument extends Instrument {
 	private String wood;
 	@Enumerated(value = EnumType.STRING)
 	private StringMaterial stringMaterial;
+	@Enumerated(EnumType.STRING)
+	private GuitarType guitarType;
 
 	public StringInstrument() {
 
 	}
 
 	public StringInstrument(UUID id, String name, String brand, InstrumentType type, Integer numberOfStrings,
-			String wood, StringMaterial stringMaterial) {
+			String wood, StringMaterial stringMaterial, GuitarType guitarType) {
 		super(id, name, brand, type);
-		super.setType(InstrumentType.STRING);
 		this.numberOfStrings = numberOfStrings;
 		this.wood = wood;
 		this.stringMaterial = stringMaterial;
+		this.guitarType = guitarType;
 	}
 
 	public Integer getNumberOfStrings() {
@@ -57,6 +60,14 @@ public class StringInstrument extends Instrument {
 
 	public void setStringMaterial(StringMaterial stringMaterial) {
 		this.stringMaterial = stringMaterial;
+	}
+
+	public GuitarType getGuitarType() {
+		return guitarType;
+	}
+
+	public void setGuitarType(GuitarType guitarType) {
+		this.guitarType = guitarType;
 	}
 
 }

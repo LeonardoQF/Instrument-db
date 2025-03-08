@@ -61,7 +61,7 @@ class TestsApplicationTests {
 	@Test
 	void createImageInCorrectInstrumentFolderTest() throws IOException {
 		Instrument instrument = new KeysInstrument(UUID.fromString("5952bdb6-c035-438c-970d-18952e561e3d"), "DGX-670", "YAMAHA",
-				InstrumentType.KEYS, 88, PianoType.DIGITAL);
+				InstrumentType.KEYS, 88, PianoType.DIGITAL, 6, false, true, "12-TET");
 
 		Path imageToSavePath = Paths.get("D:\\instrument-db_storage\\test_images\\DGX-670_image.jpg");
 

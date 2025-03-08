@@ -23,7 +23,7 @@ public class Seeding implements ApplicationRunner {
 	public void run(ApplicationArguments args) throws Exception {
 		
 		
-		Instrument p1 = new KeysInstrument(null, "Player 3000", "Fritz Dobbert", InstrumentType.KEYS, 88, PianoType.ACOUSTIC);
+		Instrument p1 = new KeysInstrument(null, "Player 3000", "Fritz Dobbert", InstrumentType.KEYS, 88, PianoType.ACOUSTIC, 8, true, false, "12-TET");
 		
 		service.save(p1);
 		

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -38,7 +37,7 @@ import lombok.ToString;
 		@JsonSubTypes.Type(value = PercussionInstrument.class, name = "PERCUSSION"),
 		@JsonSubTypes.Type(value = WoodwindInstrument.class, name = "WOODWIND"),
 		@JsonSubTypes.Type(value = BrassInstrument.class, name = "BRASS") })
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Instrument implements Serializable {
 	private static final long serialVersionUID = 2275576575417265514L;
 
@@ -49,7 +48,7 @@ public abstract class Instrument implements Serializable {
 	private String brand;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "type", nullable = false)
+	//@Column(name = "type", nullable = false)
 	private InstrumentType type;
 
 	public Instrument() {
@@ -102,13 +101,13 @@ public abstract class Instrument implements Serializable {
 		case STRING:
 			return new Guitar();
 		case BRASS:
-			// TODO return new BrassInstrument
+			return new BrassInstrument();
 		case OTHER:
 			// TODO return new OtherInstrument
 		case PERCUSSION:
-			// TODO return new PercussionInstrument
+			return new PercussionInstrument();
 		case WOODWIND:
-			// TODO return new WoodwindInstrument
+			return new WoodwindInstrument();
 		default:
 			throw new IllegalArgumentException("Provided InstrumentType does not exist");
 
