@@ -29,6 +29,7 @@ public class StringInstrumentDeserializer extends StdDeserializer<StringInstrume
 	 * {@code guitarType} value passed. If the {@code guitarType} field is null or
 	 * invalid, a regular StringInstrument object is returned instead. This method
 	 * is to be used on request processing, and should not be used outside of that.
+	 * @return A StringInstrument if the {@code guitarType} field null or not present, or a Guitar if it is.
 	 */
 	@Override
 	public StringInstrument deserialize(JsonParser p, DeserializationContext ctxt)
@@ -40,7 +41,7 @@ public class StringInstrumentDeserializer extends StdDeserializer<StringInstrume
 
 		StringInstrument instrument = node.has("guitarType") ? new Guitar() : new StringInstrument();
 
-		// This code is horrendous and verbose and should be improved in the near future.
+		// This code is horrendous, verbose and should be improved in the near future.
 		if (node.has("name")) {
 			instrument.setName(node.get("name").asText());
 		}
@@ -61,29 +62,31 @@ public class StringInstrumentDeserializer extends StdDeserializer<StringInstrume
 		}
 		if (node.has("guitarType")) {
 			instrument.setGuitarType(GuitarType.valueOf(node.get("guitarType").asText()));
-		}
-
-		if (instrument instanceof Guitar guitar) {
-			if (node.has("numberOfFrets")) {
-				guitar.setNumberOfFrets(node.get("numberOfFrets").asInt());
-			}
-			if (node.has("neckWood")) {
-				guitar.setNeckWood(node.get("neckWood").asText());
-			}
-			if (node.has("hasWhammyBar")) {
-				guitar.setHasWhammyBar(node.get("hasWhammyBar").asBoolean());
-			}
-			if (node.has("hasBuiltInTuner")) {
-				guitar.setHasBuiltInTuner(node.get("hasBuiltInTuner").asBoolean());
-			}
-			if (node.has("pickups")) {
-				guitar.setPickups(node.get("pickups").asText());
-			}
-			if (node.has("bodyShape")) {
-				guitar.setBodyShape(node.get("bodyShape").asText());
-			}
+			populateGuitarJson(node, (Guitar)instrument);
 		}
 
 		return instrument;
 	}
+
+	public void populateGuitarJson(JsonNode node, Guitar guitar) {
+		if (node.has("numberOfFrets")) {
+			guitar.setNumberOfFrets(node.get("numberOfFrets").asInt());
+		}
+		if (node.has("neckWood")) {
+			guitar.setNeckWood(node.get("neckWood").asText());
+		}
+		if (node.has("hasWhammyBar")) {
+			guitar.setHasWhammyBar(node.get("hasWhammyBar").asBoolean());
+		}
+		if (node.has("hasBuiltInTuner")) {
+			guitar.setHasBuiltInTuner(node.get("hasBuiltInTuner").asBoolean());
+		}
+		if (node.has("pickups")) {
+			guitar.setPickups(node.get("pickups").asText());
+		}
+		if (node.has("bodyShape")) {
+			guitar.setBodyShape(node.get("bodyShape").asText());
+		}
+	}
+
 }
