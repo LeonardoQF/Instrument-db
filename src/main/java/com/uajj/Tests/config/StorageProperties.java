@@ -1,27 +1,32 @@
 package com.uajj.Tests.config;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
-@ConfigurationProperties("storage")
+@ConfigurationProperties("config.storage")
 public class StorageProperties {
-	
-	@Primary
-	@Bean
-	static StorageProperties getDefaultProperties() {
-		return new StorageProperties();	
-	}
-	
+
 	private String pathName;
-	
+
+	private List<String> supportedImageTypes;
+
 	public String getPathName() {
 		return pathName;
 	}
-	
+
 	public void setPathName(String pathName) {
 		this.pathName = pathName;
 	}
+
+	public List<String> getSupportedImageTypes() {
+		return supportedImageTypes;
+	}
+
+	public void setSupportedImageTypes(List<String> supportedImageTypes) {
+		this.supportedImageTypes = supportedImageTypes;
+	}
+
 }

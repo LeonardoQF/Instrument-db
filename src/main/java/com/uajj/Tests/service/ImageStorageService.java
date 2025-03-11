@@ -26,10 +26,14 @@ public class ImageStorageService implements StorageService {
 	 */
 	private final Path rootFolderLocation;
 
+	private StorageProperties properties;
+
 	public ImageStorageService(StorageProperties properties) {
 		if (properties.getPathName().trim().length() == 0) {
 			throw new StorageException("File upload location is empty");
 		}
+
+		this.properties = properties;
 
 		this.rootFolderLocation = Paths.get(properties.getPathName());
 
@@ -75,7 +79,7 @@ public class ImageStorageService implements StorageService {
 
 			Path destinationPath = createFolder(instrument).resolve(file.getOriginalFilename());
 
-			System.out.println("Destination path for testing: " + destinationPath);
+			System.out.println("Received image save path: " + destinationPath);
 
 			file.transferTo(destinationPath);
 
@@ -135,6 +139,24 @@ public class ImageStorageService implements StorageService {
 			throw new RuntimeException("Error while creating folder: " + e);
 
 		}
+	}
+
+	/**
+	 * Validates and sanitizes the image to be stored in the storage. It does so by
+	 * checking whether the file type is supported and renaming the image file to a
+	 * standardized name.
+	 * 
+	 * @param image
+	 */
+	public void sanitizeImage(MultipartFile image) {
+		if(image.isEmpty()) throw new StorageException("Image cannot be empty");
+		String imageFileFormat = image.getContentType().split("/")[1]; // Splits the image's name in two: The part
+																		// before and after the /, and retrieves the
+																		// second part with array index 1.
+		if (!properties.getSupportedImageTypes().stream().anyMatch(x -> x.equals(imageFileFormat))) {
+			throw new StorageException("File format not supported: ." + imageFileFormat);
+		}
+
 	}
 
 }

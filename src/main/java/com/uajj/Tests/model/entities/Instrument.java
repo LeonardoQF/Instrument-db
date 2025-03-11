@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -48,7 +49,7 @@ public abstract class Instrument implements Serializable {
 	private String brand;
 
 	@Enumerated(EnumType.STRING)
-	//@Column(name = "type", nullable = false)
+	@Column(name = "type", nullable = false)
 	private InstrumentType type;
 
 	public Instrument() {
@@ -94,7 +95,7 @@ public abstract class Instrument implements Serializable {
 	}
 
 	public static final Instrument fromInstrumentType(InstrumentType type) {
-
+		
 		switch (type) {
 		case KEYS:
 			return new KeysInstrument();

@@ -16,9 +16,14 @@ spring:
     multipart:
       enabled: true
       
-    
-storage:
-  pathName: C:\instrument-db_storage\images
+config: 
+  storage:
+    pathName: C:\instrument-db_storage\images
+    supportedImageTypes:
+      - jpg
+      - jpeg
+      - png
+
   
   
       

@@ -26,6 +26,7 @@ public class ImageUploadController {
 	@PostMapping
 	public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile image, @RequestParam("id") String id,
 			@RequestParam("instrumentType") String instrumentType) {
+		service.sanitizeImage(image);
 		
 		Instrument instrument = Instrument.fromInstrumentType(InstrumentType.valueOf(instrumentType));
 		
