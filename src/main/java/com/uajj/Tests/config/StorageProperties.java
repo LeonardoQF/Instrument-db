@@ -13,6 +13,10 @@ public class StorageProperties {
 
 	private List<String> supportedImageTypes;
 
+	private Long maxImageSizeBytes;
+
+	private int maxImagesPerFolder;
+
 	public String getPathName() {
 		return pathName;
 	}
@@ -27,6 +31,22 @@ public class StorageProperties {
 
 	public void setSupportedImageTypes(List<String> supportedImageTypes) {
 		this.supportedImageTypes = supportedImageTypes;
+	}
+
+	public Long getMaxImageSizeBytes() {
+		return maxImageSizeBytes;
+	}
+
+	public void setMaxImageSizeBytes(Long maxImageSizeBytes) {
+		this.maxImageSizeBytes = maxImageSizeBytes;
+	}
+
+	public int getMaxImagesPerFolder() {
+		return maxImagesPerFolder;
+	}
+
+	public void setMaxImagesPerFolder(int maxImagesPerFolder) {
+		this.maxImagesPerFolder = maxImagesPerFolder;
 	}
 
 }

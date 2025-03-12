@@ -73,12 +73,13 @@ public class ImageStorageService implements StorageService {
 	@Override
 	public void storeFile(MultipartFile file, Instrument instrument) {
 		try {
-
-			if (file.isEmpty())
-				throw new StorageException("File cannot be empty");
-
-			Path destinationPath = createFolder(instrument).resolve(file.getOriginalFilename());
-
+			sanitizeImage(file);
+			
+			Path folderPath = createFolder(instrument);
+			Path destinationPath = folderPath.resolve(generateStandardizedImageName(file, folderPath));
+			
+			validateImageCreation(file, folderPath);
+			
 			System.out.println("Received image save path: " + destinationPath);
 
 			file.transferTo(destinationPath);
@@ -143,20 +144,37 @@ public class ImageStorageService implements StorageService {
 
 	/**
 	 * Validates and sanitizes the image to be stored in the storage. It does so by
-	 * checking whether the file type is supported and renaming the image file to a
-	 * standardized name.
+	 * checking whether the file type is supported, empty and if its size is too big.
 	 * 
 	 * @param image
 	 */
 	public void sanitizeImage(MultipartFile image) {
-		if(image.isEmpty()) throw new StorageException("Image cannot be empty");
-		String imageFileFormat = image.getContentType().split("/")[1]; // Splits the image's name in two: The part
-																		// before and after the /, and retrieves the
-																		// second part with array index 1.
-		if (!properties.getSupportedImageTypes().stream().anyMatch(x -> x.equals(imageFileFormat))) {
+		if (image.isEmpty())
+			throw new StorageException("Image cannot be empty");
+		String imageFileFormat = getDotFileExtension(image);
+		
+		if (!properties.getSupportedImageTypes().stream().anyMatch(x -> x.equals(imageFileFormat))) // Checks whether the file's format is supported, as per the supportedImageTypes on application.yaml
 			throw new StorageException("File format not supported: ." + imageFileFormat);
-		}
 
+		if (image.getSize() > properties.getMaxImageSizeBytes())
+			throw new StorageException("Images cannot be bigger than 5 MB");
+	}
+	
+	public void validateImageCreation(MultipartFile image, Path instrumentFolderPath) {
+		File instrumentFolder = instrumentFolderPath.toFile();
+		
+		if(instrumentFolder.listFiles().length >= properties.getMaxImagesPerFolder()) throw new StorageException("Only 5 images can be saved for each instrument");
 	}
 
+	public String generateStandardizedImageName(MultipartFile image, Path imageFolderPath) {
+		File imageFolder = imageFolderPath.toFile();
+		File[] existingImagesInFolder = imageFolder.listFiles();
+		int imageNumberId = existingImagesInFolder.length + 1;
+
+		return "image" + imageNumberId + getDotFileExtension(image);
+	}
+
+	public String getDotFileExtension(MultipartFile file) {
+		return "." + file.getContentType().split("/")[1]; // Splits the image's name in two: The part before and after the /, and retrieves the second part which is of array index 1.
+	}
 }
