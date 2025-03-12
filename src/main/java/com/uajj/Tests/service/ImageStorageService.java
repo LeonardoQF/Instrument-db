@@ -88,7 +88,7 @@ public class ImageStorageService implements StorageService {
 			throw new RuntimeException("Error creating file: " + e);
 		} catch (StorageAlreadyExistsException e) {
 			System.out.println(e);
-		}
+		} 
 
 	}
 
