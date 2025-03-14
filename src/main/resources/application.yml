@@ -22,7 +22,7 @@ spring:
       
 config: 
   storage:
-    pathName: C:\instrument-db_storage\images
+    pathName: ${INSTRUMENT_DB_PATH:/home/leonardo/instrumentdb}
     supportedImageTypes:
       - .jpg
       - .jpeg
