@@ -22,7 +22,7 @@ public class ExceptionHandling {
 		return ResponseEntity.badRequest().body(error);
 	}
 	
-	public static ResponseEntity<StandardHttpError> populateStandardHttpError(RuntimeException e, HttpServletRequest request, String customMessage) {
+	public static ResponseEntity<StandardHttpError> populateStandardHttpError(Exception e, HttpServletRequest request, String customMessage) {
 		int status = HttpStatus.BAD_REQUEST.value();
 		String message = customMessage;
 		String path = request.getRequestURI();

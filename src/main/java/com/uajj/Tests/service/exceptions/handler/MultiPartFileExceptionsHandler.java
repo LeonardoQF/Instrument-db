@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.uajj.Tests.config.StorageProperties;
 import com.uajj.Tests.service.exceptions.StandardHttpError;
@@ -13,7 +14,7 @@ import com.uajj.Tests.util.ExceptionHandling;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
-public class FIleSizeTooBigExceptionHandler {
+public class MultiPartFileExceptionsHandler {
 	
 	@Autowired
 	StorageProperties props;
@@ -22,5 +23,11 @@ public class FIleSizeTooBigExceptionHandler {
 	public ResponseEntity<StandardHttpError> resolveMaxUploadSizeExceededException(MaxUploadSizeExceededException e, HttpServletRequest request){
 		return ExceptionHandling.populateStandardHttpError(e, request, "File size too big, maximum allowed is " + props.getMaxImageSizeMegabytesString());
 	}
+	
+	@ExceptionHandler(exception = MissingServletRequestPartException.class)
+	public ResponseEntity<StandardHttpError> resolveMissingServletRequestPartException(MissingServletRequestPartException e, HttpServletRequest request){
+		return ExceptionHandling.populateStandardHttpError(e, request, "File cannot be Empty");
+	}
+	
 
 }

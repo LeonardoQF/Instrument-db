@@ -154,7 +154,7 @@ public class ImageStorageService implements StorageService {
 		String imageFileFormat = getDotFileExtension(image);
 		
 		if (!properties.getSupportedImageTypes().stream().anyMatch(x -> x.equals(imageFileFormat))) // Checks whether the file's format is supported, as per the supportedImageTypes on application.yaml
-			throw new StorageException("File format not supported: ." + imageFileFormat);
+			throw new StorageException("File format not supported: " + imageFileFormat);
 
 		if (image.getSize() > properties.getMaxImageSizeBytes())
 			throw new StorageException("Images cannot be bigger than 5 MB");
