@@ -22,7 +22,7 @@ spring:
       
 config: 
   storage:
-    pathName: ${INSTRUMENT_DB_PATH:/home/leonardo/instrumentdb}
+    pathName: ${INSTRUMENT_DB_PATH:/home/leonardo/instrumentdb} #Add the variable to STS environment variables (Run -> Run configurations)
     supportedImageTypes:
       - .jpg
       - .jpeg

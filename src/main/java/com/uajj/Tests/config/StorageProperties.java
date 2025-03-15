@@ -2,6 +2,7 @@ package com.uajj.Tests.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +17,9 @@ public class StorageProperties {
 	private Long maxImageSizeBytes;
 
 	private int maxImagesPerFolder;
+	
+	@Value("${spring.servlet.multipart.max-file-size}")
+	private String maxImageSizeMegabytesString;
 
 	public String getPathName() {
 		return pathName;
@@ -48,5 +52,15 @@ public class StorageProperties {
 	public void setMaxImagesPerFolder(int maxImagesPerFolder) {
 		this.maxImagesPerFolder = maxImagesPerFolder;
 	}
+
+	public String getMaxImageSizeMegabytesString() {
+		return maxImageSizeMegabytesString;
+	}
+
+	public void setMaxImageSizeMegabytesString(String maxImageSizeMegabytesString) {
+		this.maxImageSizeMegabytesString = maxImageSizeMegabytesString;
+	}
+	
+	
 
 }

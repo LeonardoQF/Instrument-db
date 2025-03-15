@@ -39,8 +39,7 @@ public class ImageUploadController {
 			return ResponseEntity.ok("Image uploaded!");
 		} catch (IllegalArgumentException e) {
 			throw new StorageException("Invalid Instrument Type");
-		}
-
+		} 
 	}
 
 }

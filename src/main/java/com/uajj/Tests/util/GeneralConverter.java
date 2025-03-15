@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
-public class FileConverter {
+public class GeneralConverter {
 	
 	public static File fromMultiPartFile(MultipartFile file) throws IOException {
 		
@@ -24,7 +25,17 @@ public class FileConverter {
 		}
 		
 		return convertedFile;
+	}
+	
+	/**
+	 * Converts bytes to megabytes by dividing the bytes by 2^20
+	 * @param bytes
+	 * @return
+	 */
+	public static String convertToMegabytesString(long bytes) {
+		DataSize size = DataSize.ofBytes(bytes);
 		
+		return "" + size.toMegabytes() + "MB";
 	}
 
 }
