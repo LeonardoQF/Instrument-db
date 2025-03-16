@@ -1,5 +1,6 @@
 package com.uajj.Tests.service.exceptions.handler;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +18,6 @@ public class StorageExceptionHandler {
 
 	@ExceptionHandler(exception = StorageException.class)
 	public ResponseEntity<StandardHttpError> resolveStorageException(StorageException e, HttpServletRequest request) {
-		return ExceptionHandling.populateStandardHttpError(e, request);
+		return ExceptionHandling.populateStandardHttpError(e, request, HttpStatus.BAD_REQUEST);
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.uajj.Tests.model.entities.Instrument;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.service.ImageStorageService;
+import com.uajj.Tests.service.InstrumentRegistryService;
 import com.uajj.Tests.service.exceptions.StorageException;
 
 @Controller
@@ -19,15 +20,18 @@ import com.uajj.Tests.service.exceptions.StorageException;
 public class ImageUploadController {
 
 	private ImageStorageService service;
+	private InstrumentRegistryService instrumentRegistryService;
 
-	public ImageUploadController(ImageStorageService service) {
+	public ImageUploadController(ImageStorageService service, InstrumentRegistryService instrumentRegistryService) {
 		this.service = service;
+		this.instrumentRegistryService = instrumentRegistryService;
 	}
 
 	@PostMapping
 	public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile image, @RequestParam("id") String id,
 			@RequestParam("instrumentType") String instrumentType) {
 		try {
+			if(!instrumentRegistryService.existsById((UUID.fromString(id)))) throw new StorageException("Instrument must be saved before adding images to it");
 
 			Instrument instrument = Instrument.fromInstrumentType(InstrumentType.valueOf(instrumentType));
 
@@ -38,8 +42,8 @@ public class ImageUploadController {
 
 			return ResponseEntity.ok("Image uploaded!");
 		} catch (IllegalArgumentException e) {
-			throw new StorageException("Invalid Instrument Type");
-		} 
+			throw new StorageException(e.getMessage());
+		}
 	}
 
 }

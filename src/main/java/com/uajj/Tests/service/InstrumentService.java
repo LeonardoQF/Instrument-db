@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.uajj.Tests.model.entities.Instrument;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.repository.InstrumentRepository;
+import com.uajj.Tests.service.exceptions.NoSuchInstrumentException;
 
 import jakarta.transaction.Transactional;
 
@@ -37,7 +38,11 @@ public class InstrumentService {
 
 	public Instrument findById(UUID id) {
 		return repository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Instrument with the specified ID not found"));
+				.orElseThrow(() -> new NoSuchInstrumentException("Instrument with the specified ID not found"));
+	}
+	
+	public boolean existsById(UUID id) {
+		return repository.existsById(id);
 	}
 
 	public List<Instrument> findAll() {

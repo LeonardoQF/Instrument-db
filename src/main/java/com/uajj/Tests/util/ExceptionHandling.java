@@ -11,26 +11,32 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class ExceptionHandling {
 
-	public static ResponseEntity<StandardHttpError> populateStandardHttpError(RuntimeException e, HttpServletRequest request) {
-		int status = HttpStatus.BAD_REQUEST.value();
+	/**
+	 * 
+	 * @param e - The exception to be treated
+	 * @param request - The request in which the exception happened.
+	 * @return
+	 */
+	public static ResponseEntity<StandardHttpError> populateStandardHttpError(Exception e, HttpServletRequest request, HttpStatus httpStatus) {
+		int status = httpStatus.value();
 		String message = e.getMessage();
 		String path = request.getRequestURI();
 		Instant currentTime = Instant.now();
 
 		StandardHttpError error = new StandardHttpError(currentTime, status, message, path);
 
-		return ResponseEntity.badRequest().body(error);
+		return ResponseEntity.status(status).body(error);
 	}
 	
-	public static ResponseEntity<StandardHttpError> populateStandardHttpError(Exception e, HttpServletRequest request, String customMessage) {
-		int status = HttpStatus.BAD_REQUEST.value();
+	public static ResponseEntity<StandardHttpError> populateStandardHttpError(Exception e, HttpServletRequest request, String customMessage, HttpStatus httpstatus) {
+		int status = httpstatus.value();
 		String message = customMessage;
 		String path = request.getRequestURI();
 		Instant currentTime = Instant.now();
 
 		StandardHttpError error = new StandardHttpError(currentTime, status, message, path);
 
-		return ResponseEntity.badRequest().body(error);
+		return ResponseEntity.status(status).body(error);
 	}
 	
 }

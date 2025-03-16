@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.uajj.Tests.config.StorageProperties;
 import com.uajj.Tests.model.entities.Instrument;
+import com.uajj.Tests.model.entities.InstrumentRegistry;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
+import com.uajj.Tests.service.exceptions.InstrumentTypeMismatchException;
 import com.uajj.Tests.service.exceptions.StorageAlreadyExistsException;
 import com.uajj.Tests.service.exceptions.StorageException;
 import com.uajj.Tests.service.interfaces.StorageService;
@@ -28,11 +31,14 @@ public class ImageStorageService implements StorageService {
 
 	private StorageProperties properties;
 
-	public ImageStorageService(StorageProperties properties) {
+	private InstrumentRegistryService instrumentRegistryService;
+
+	public ImageStorageService(StorageProperties properties, InstrumentRegistryService instrumentRegistryService) {
 		if (properties.getPathName().trim().length() == 0) {
 			throw new StorageException("File upload location is empty");
 		}
 
+		this.instrumentRegistryService = instrumentRegistryService;
 		this.properties = properties;
 
 		this.rootFolderLocation = Paths.get(properties.getPathName());
@@ -74,12 +80,12 @@ public class ImageStorageService implements StorageService {
 	public void storeFile(MultipartFile file, Instrument instrument) {
 		try {
 			sanitizeImage(file);
-			
+
 			Path folderPath = createFolder(instrument);
 			Path destinationPath = folderPath.resolve(generateStandardizedImageName(file, folderPath));
-			
+
 			validateImageCreation(file, folderPath);
-			
+
 			System.out.println("Received image save path: " + destinationPath);
 
 			file.transferTo(destinationPath);
@@ -88,7 +94,7 @@ public class ImageStorageService implements StorageService {
 			throw new RuntimeException("Error creating file: " + e);
 		} catch (StorageAlreadyExistsException e) {
 			System.out.println(e);
-		} 
+		}
 
 	}
 
@@ -108,6 +114,7 @@ public class ImageStorageService implements StorageService {
 	@Override
 	public Path createFolder(Instrument instrument) {
 		try {
+			validateFolderCreation(instrument.getId(), instrument.getType());
 			// Root directory
 			Path rootPath = rootFolderLocation;
 			File rootFolder = rootPath.toAbsolutePath().toFile();
@@ -144,26 +151,43 @@ public class ImageStorageService implements StorageService {
 
 	/**
 	 * Validates and sanitizes the image to be stored in the storage. It does so by
-	 * checking whether the file type is supported, empty and if its size is too big.
+	 * checking whether the file type is supported, empty, and if its size is too
+	 * big.
 	 * 
-	 * @param image
+	 * @param image - The image to be sanitized
 	 */
 	public void sanitizeImage(MultipartFile image) {
 		if (image.isEmpty())
 			throw new StorageException("Image cannot be empty");
+
 		String imageFileFormat = getDotFileExtension(image);
-		
-		if (!properties.getSupportedImageTypes().stream().anyMatch(x -> x.equals(imageFileFormat))) // Checks whether the file's format is supported, as per the supportedImageTypes on application.yaml
+
+		if (!properties.getSupportedImageTypes().stream().anyMatch(x -> x.equals(imageFileFormat))) // Checks whether
+																									// the file's format
+																									// is supported, as
+																									// per the
+																									// supportedImageTypes
+																									// on
+																									// application.yaml
 			throw new StorageException("File format not supported: " + imageFileFormat);
 
 		if (image.getSize() > properties.getMaxImageSizeBytes())
 			throw new StorageException("Images cannot be bigger than 5 MB");
 	}
-	
+
 	public void validateImageCreation(MultipartFile image, Path instrumentFolderPath) {
 		File instrumentFolder = instrumentFolderPath.toFile();
-		
-		if(instrumentFolder.listFiles().length >= properties.getMaxImagesPerFolder()) throw new StorageException("Only 5 images can be saved for each instrument");
+
+		if (instrumentFolder.listFiles().length >= properties.getMaxImagesPerFolder())
+			throw new StorageException("Only 5 images can be saved for each instrument");
+	}
+
+	public void validateFolderCreation(UUID id, InstrumentType instrumentType) {
+		InstrumentRegistry foundInstrumentRegistry = instrumentRegistryService.findById(id);
+
+		if (!foundInstrumentRegistry.getInstrumentType().equals(instrumentType))
+			throw new InstrumentTypeMismatchException("Instrument type mismatch: Provided Instrument is of type "
+					+ foundInstrumentRegistry.getInstrumentType() + ", not the provided " + instrumentType + " type");
 	}
 
 	public String generateStandardizedImageName(MultipartFile image, Path imageFolderPath) {
@@ -175,6 +199,9 @@ public class ImageStorageService implements StorageService {
 	}
 
 	public String getDotFileExtension(MultipartFile file) {
-		return "." + file.getContentType().split("/")[1]; // Splits the image's name in two: The part before and after the /, and retrieves the second part which is of array index 1.
+		return "." + file.getContentType().split("/")[1]; // Splits the image's name in two: The part before and after
+															// the /, and retrieves the second part which is of array
+															// index 1.
 	}
+
 }
