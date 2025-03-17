@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
+import com.uajj.Tests.service.exceptions.NoSuchInstrumentTypeException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -95,12 +96,12 @@ public abstract class Instrument implements Serializable {
 	}
 
 	public static final Instrument fromInstrumentType(InstrumentType type) {
-		
+
 		switch (type) {
 		case KEYS:
 			return new KeysInstrument();
 		case STRING:
-			return new Guitar();
+			return new StringInstrument();
 		case BRASS:
 			return new BrassInstrument();
 		case OTHER:
@@ -110,10 +111,18 @@ public abstract class Instrument implements Serializable {
 		case WOODWIND:
 			return new WoodwindInstrument();
 		default:
-			throw new IllegalArgumentException("Provided InstrumentType does not exist");
+			throw new NoSuchInstrumentTypeException("Provided InstrumentType does not exist");
 
 		}
+	}
 
+	public static final boolean isValidInstrumentType(String type) {
+		try {
+			InstrumentType.valueOf(type);
+			return true;
+		}catch(IllegalArgumentException e) {
+			throw new NoSuchInstrumentTypeException("Provided InstrumentType does not exist: " + type.toString());
+		}
 	}
 
 }
