@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.uajj.Tests.model.entities.Instrument;
+import com.uajj.Tests.model.entities.InstrumentRegistry;
 
 public interface StorageService {
 	
@@ -15,7 +16,7 @@ public interface StorageService {
 	
 	void storeFile(MultipartFile file, Instrument instrument);
 	
-	Resource getAsResource(String filename);
+	Resource getAsResource(InstrumentRegistry registry, String filename);
 
 	
 

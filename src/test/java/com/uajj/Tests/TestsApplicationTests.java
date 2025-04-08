@@ -20,12 +20,16 @@ import com.uajj.Tests.model.entities.KeysInstrument;
 import com.uajj.Tests.model.entities.enums.InstrumentType;
 import com.uajj.Tests.model.entities.enums.PianoType;
 import com.uajj.Tests.service.ImageStorageService;
+import com.uajj.Tests.service.InstrumentService;
 
 @SpringBootTest
 class TestsApplicationTests {
 
 	@Autowired
 	ImageStorageService storageService;
+	
+	@Autowired
+	InstrumentService service;
 
 	@Test
 	void contextLoads() {
@@ -74,5 +78,4 @@ class TestsApplicationTests {
 		storageService.storeFile(imageToSave, instrument);
 
 	}
-
 }

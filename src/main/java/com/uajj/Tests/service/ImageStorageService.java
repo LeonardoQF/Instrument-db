@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,9 +102,35 @@ public class ImageStorageService implements StorageService {
 	}
 
 	@Override
-	public Resource getAsResource(String filename) {
-		// TODO Auto-generated method stub
-		return null;
+	public Resource getAsResource(InstrumentRegistry registry, String filename) {
+		Path path = rootFolderLocation.resolve(registry.getInstrumentType().toString())
+				.resolve(registry.getId().toString()).resolve(filename);
+
+		File image = path.toFile();
+
+		return new FileSystemResource(image);
+	}
+
+	public List<String> getInstrumentImagesAsUrls(InstrumentRegistry registry) {
+		String baseUrl = "http://localhost:8080/image_upload";
+		Path instrumentFolderPath = rootFolderLocation.resolve(registry.getInstrumentType().toString())
+				.resolve(registry.getId().toString());
+
+		File[] files = instrumentFolderPath.toFile().listFiles();
+
+		List<String> urls = new ArrayList<>();
+
+		for (File file : files) {
+			if (file.isFile()) {
+				String filename = file.getName();
+				String fullUrl = baseUrl.concat("/image").concat("?id=").concat(registry.getId().toString()).concat("&instrumentType=")
+						.concat(registry.getInstrumentType().toString()).concat("&filename=").concat(filename);
+			urls.add(fullUrl);
+			}
+		}
+		
+		return urls;
+
 	}
 
 	/**
@@ -199,9 +228,11 @@ public class ImageStorageService implements StorageService {
 	}
 
 	public String getDotFileExtension(MultipartFile file) {
-		return "." + file.getContentType().split("/")[1]; // Splits the image's name in two: The part before and after
-															// the /, and retrieves the second part which is of array
-															// index 1.
+		return "." + file.getContentType().split("/")[1];
+		/*
+		 * Splits the image's name in two: The part before and after // the /, and
+		 * retrieves the second part which is of array // index 1.
+		 */
 	}
 
 }

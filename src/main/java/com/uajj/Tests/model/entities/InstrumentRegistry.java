@@ -1,5 +1,6 @@
 package com.uajj.Tests.model.entities;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import com.uajj.Tests.model.entities.enums.InstrumentType;
@@ -17,7 +18,9 @@ import jakarta.persistence.Id;
  */
 
 @Entity
-public class InstrumentRegistry {
+public class InstrumentRegistry implements Serializable {
+
+	private static final long serialVersionUID = 5937901044934053343L;
 
 	@Id
 	private UUID id;

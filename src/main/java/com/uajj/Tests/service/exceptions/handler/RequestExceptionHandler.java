@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentConversionNotSupportedException;
 
 import com.uajj.Tests.service.exceptions.InstrumentTypeMismatchException;
 import com.uajj.Tests.service.exceptions.NoSuchInstrumentException;
@@ -29,6 +30,11 @@ public class RequestExceptionHandler {
 	@ExceptionHandler(NoSuchInstrumentTypeException.class)
 	public ResponseEntity<StandardHttpError> resolveNoSuchInstrumentTypeException(NoSuchInstrumentTypeException e, HttpServletRequest request) {
 		return ExceptionHandling.populateStandardHttpError(e, request, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(MethodArgumentConversionNotSupportedException.class)
+	public ResponseEntity<StandardHttpError> resolveMethodArgumentConversionNotSupportedException(MethodArgumentConversionNotSupportedException e, HttpServletRequest request) {
+		return ExceptionHandling.populateStandardHttpError(e, request, "Invalid parameter type or value: " + e.getPropertyName(), HttpStatus.BAD_REQUEST);
 	}
 	
 	

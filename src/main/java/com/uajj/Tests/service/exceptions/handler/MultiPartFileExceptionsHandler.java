@@ -22,7 +22,7 @@ public class MultiPartFileExceptionsHandler {
 	
 	@ExceptionHandler(exception = MaxUploadSizeExceededException.class)
 	public ResponseEntity<StandardHttpError> resolveMaxUploadSizeExceededException(MaxUploadSizeExceededException e, HttpServletRequest request){
-		return ExceptionHandling.populateStandardHttpError(e, request, "File size too big, maximum allowed is " + props.getMaxImageSizeMegabytesString(), HttpStatus.BAD_REQUEST);
+		return ExceptionHandling.populateStandardHttpError(e, request, "File size is too big: maximum allowed is " + props.getMaxImageSizeMegabytesString(), HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(exception = MissingServletRequestPartException.class)
