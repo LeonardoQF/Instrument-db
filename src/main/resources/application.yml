@@ -17,12 +17,17 @@ spring:
       enabled: true
       max-file-size: 5MB
       max-request-size: 5MB
+
+
+springdoc:
+  swagger-ui:
+    path: /docs
         
         
       
 config: 
   storage:
-    pathName: ${INSTRUMENT_DB_PATH:/home/leonardo/instrumentdb} #Add the variable to STS environment variables (Run -> Run configurations)
+    path: ${INSTRUMENT_DB_PATH:/home/leonardo/Coding/Storage} #Add the variable to STS environment variables (Run -> Run configurations)
     supportedImageTypes:
       - .jpg
       - .jpeg
