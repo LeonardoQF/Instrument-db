@@ -11,7 +11,6 @@ import com.uajj.instrumentDB.model.entities.Instrument;
 import com.uajj.instrumentDB.model.entities.WoodwindInstrument;
 import com.uajj.instrumentDB.model.entities.enums.InstrumentType;
 import com.uajj.instrumentDB.model.entities.enums.ReedType;
-import com.uajj.instrumentDB.service.InstrumentRegistryService;
 import com.uajj.instrumentDB.service.InstrumentService;
 
 import java.util.List;

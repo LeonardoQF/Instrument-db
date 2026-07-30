@@ -13,6 +13,7 @@ import com.uajj.instrumentDB.service.exceptions.StandardHttpError;
 import com.uajj.instrumentDB.util.ExceptionHandling;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class RequestExceptionHandler {
@@ -36,6 +37,11 @@ public class RequestExceptionHandler {
 	public ResponseEntity<StandardHttpError> resolveMethodArgumentConversionNotSupportedException(MethodArgumentConversionNotSupportedException e, HttpServletRequest request) {
 		return ExceptionHandling.populateStandardHttpError(e, request, "Invalid parameter type or value: " + e.getPropertyName(), HttpStatus.BAD_REQUEST);
 	}
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<StandardHttpError> resolveNoResourceFoundException(NoResourceFoundException e, HttpServletRequest request) {
+        return ExceptionHandling.populateStandardHttpError(e, request, HttpStatus.NOT_FOUND);
+    }
 	
 	
 	

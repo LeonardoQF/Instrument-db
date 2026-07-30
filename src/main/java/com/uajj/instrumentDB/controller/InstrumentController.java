@@ -12,24 +12,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import static com.uajj.instrumentDB.controller.GenericController.generateURI;
 
 import com.uajj.instrumentDB.model.entities.Instrument;
-import com.uajj.instrumentDB.model.entities.InstrumentRegistry;
 import com.uajj.instrumentDB.model.entities.enums.InstrumentType;
-import com.uajj.instrumentDB.service.InstrumentRegistryService;
 import com.uajj.instrumentDB.service.InstrumentService;
 
 @RestController
 @RequestMapping(path = "/instruments")
-public class InstrumentController {
+public class InstrumentController implements GenericController {
 
 	private final InstrumentService service;
-	private final InstrumentRegistryService instrumentRegistryService;
 
-	public InstrumentController(InstrumentService service, InstrumentRegistryService instrumentRegistryService) {
+	public InstrumentController(InstrumentService service) {
 		this.service = service;
-		this.instrumentRegistryService = instrumentRegistryService;
 	}
 
 	@GetMapping
@@ -45,12 +42,9 @@ public class InstrumentController {
 	
 	@PostMapping
 	public ResponseEntity<Instrument> addInstrument(@RequestBody(required = true) Instrument instrument) {
-		service.save(instrument);
-		instrumentRegistryService.save(new InstrumentRegistry(instrument.getId(), instrument.getType())); //Salva o ID do instrumento enviado na tabela InstrumentRegistry
-		
+		Instrument savedInstrument = service.save(instrument);
 
-		URI uri = (ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(instrument.getId().toString()).toUri());
+		URI uri = generateURI(savedInstrument.getId().toString());
 
 		return ResponseEntity.created(uri).body(instrument);
 	}

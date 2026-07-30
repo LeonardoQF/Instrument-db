@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.uajj.instrumentDB.config.StorageProperties;
 import com.uajj.instrumentDB.model.entities.Instrument;
-import com.uajj.instrumentDB.model.entities.InstrumentRegistry;
 import com.uajj.instrumentDB.model.entities.enums.InstrumentType;
 import com.uajj.instrumentDB.service.exceptions.InstrumentTypeMismatchException;
 import com.uajj.instrumentDB.service.exceptions.StorageAlreadyExistsException;
@@ -34,14 +33,15 @@ public class ImageStorageService implements StorageService {
 
 	private final StorageProperties properties;
 
-	private final InstrumentRegistryService instrumentRegistryService;
+    private InstrumentService service;
 
-	public ImageStorageService(StorageProperties properties, InstrumentRegistryService instrumentRegistryService) {
+
+	public ImageStorageService(StorageProperties properties, InstrumentService service) {
 		if (properties.getPath().trim().isEmpty()) {
 			throw new StorageException("File upload path is empty");
 		}
 
-		this.instrumentRegistryService = instrumentRegistryService;
+		this.service = service;
 		this.properties = properties;
 
 		this.rootFolderLocation = Paths.get(properties.getPath());
@@ -102,19 +102,19 @@ public class ImageStorageService implements StorageService {
 	}
 
 	@Override
-	public Resource getAsResource(InstrumentRegistry registry, String filename) {
-		Path path = rootFolderLocation.resolve(registry.getInstrumentType().toString())
-				.resolve(registry.getId().toString()).resolve(filename);
+	public Resource getAsResource(Instrument instrument, String filename) {
+		Path path = rootFolderLocation.resolve(instrument.getType().toString())
+				.resolve(instrument.getId().toString()).resolve(filename);
 
 		File image = path.toFile();
 
 		return new FileSystemResource(image);
 	}
 
-	public List<String> getInstrumentImagesAsUrls(InstrumentRegistry registry) {
+	public List<String> getInstrumentImagesAsUrls(Instrument instrument) {
 		String baseUrl = "http://localhost:8080/image_upload";
-		Path instrumentFolderPath = rootFolderLocation.resolve(registry.getInstrumentType().toString())
-				.resolve(registry.getId().toString());
+		Path instrumentFolderPath = rootFolderLocation.resolve(instrument.getType().toString())
+				.resolve(instrument.getId().toString());
 
 		File[] files = instrumentFolderPath.toFile().listFiles();
 
@@ -123,8 +123,8 @@ public class ImageStorageService implements StorageService {
 		for (File file : files) {
 			if (file.isFile()) {
 				String filename = file.getName();
-				String fullUrl = baseUrl.concat("/image").concat("?id=").concat(registry.getId().toString()).concat("&instrumentType=")
-						.concat(registry.getInstrumentType().toString()).concat("&filename=").concat(filename);
+				String fullUrl = baseUrl.concat("/image").concat("?id=").concat(instrument.getId().toString()).concat("&instrumentType=")
+						.concat(instrument.getType().toString()).concat("&filename=").concat(filename);
 			urls.add(fullUrl);
 			}
 		}
@@ -145,8 +145,7 @@ public class ImageStorageService implements StorageService {
 		try {
 			validateFolderCreation(instrument.getId(), instrument.getType());
 			// Root directory
-			Path rootPath = rootFolderLocation;
-			File rootFolder = rootPath.toAbsolutePath().toFile();
+            File rootFolder = rootFolderLocation.toAbsolutePath().toFile();
 
 			// Name for the created folder, which should be named after the instrument's ID
 			String folderToBeCreatedName = instrument.getId().toString();
@@ -201,7 +200,7 @@ public class ImageStorageService implements StorageService {
 			throw new StorageException("File format not supported: " + imageFileFormat);
 
 		if (image.getSize() > properties.getMaxImageSizeBytes())
-			throw new StorageException("Images cannot be bigger than 5 MB");
+			throw new StorageException("Images cannot exceed 5 MB");
 	}
 
 	public void validateImageCreation(MultipartFile image, Path instrumentFolderPath) {
@@ -212,11 +211,11 @@ public class ImageStorageService implements StorageService {
 	}
 
 	public void validateFolderCreation(UUID id, InstrumentType instrumentType) {
-		InstrumentRegistry foundInstrumentRegistry = instrumentRegistryService.findById(id);
+		Instrument foundInstrument = service.findById(id);
 
-		if (!foundInstrumentRegistry.getInstrumentType().equals(instrumentType))
+		if (!foundInstrument.getType().equals(instrumentType))
 			throw new InstrumentTypeMismatchException("Instrument type mismatch: Provided Instrument is of type "
-					+ foundInstrumentRegistry.getInstrumentType() + ", not the provided " + instrumentType + " type");
+					+ foundInstrument.getType() + ", not the provided " + instrumentType + " type");
 	}
 
 	public String generateStandardizedImageName(MultipartFile image, Path imageFolderPath) {
