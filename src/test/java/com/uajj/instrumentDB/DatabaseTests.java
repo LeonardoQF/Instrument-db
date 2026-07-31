@@ -23,15 +23,22 @@ public class DatabaseTests {
 
 	@Autowired
 	private InstrumentService service;
-	
-	@Autowired
-	private InstrumentRegistryService instrumentRegistryService;
 
 	@Test
 	void instrumentExistsByIdOnAnyTableTest() {
 
-		Instrument flute = new WoodwindInstrument(null, "Concert Flute", "Yamaha", InstrumentType.WOODWIND,
-				ReedType.NONE, "Boehm System", "C4 to C7", "Silver-plated nickel silver");
+		WoodwindInstrument flute = new WoodwindInstrument();
+
+        flute.setName("YRS23G");
+        flute.setStandardKey("C");
+        flute.setReedType(ReedType.NONE);
+        flute.setHasTranspose(false);
+        flute.setBrand("Yamaha");
+        flute.setBodyMaterial("ABS Resin");
+        flute.setReleaseYear(1999);
+        flute.setRange("C5-D7");
+        flute.setType(InstrumentType.WOODWIND);
+
 
 		service.save(flute);
 		

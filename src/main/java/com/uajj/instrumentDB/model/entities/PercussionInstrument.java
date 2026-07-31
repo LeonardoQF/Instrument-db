@@ -7,62 +7,27 @@ import com.uajj.instrumentDB.model.entities.enums.PercussionType;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.*;
 
 @Entity
-@DiscriminatorValue("PERCUSSION")
+//@DiscriminatorValue("PERCUSSION")
+@Data
+@NoArgsConstructor
 public class PercussionInstrument extends Instrument {
 
 	private static final long serialVersionUID = 4556483277105293323L;
 	
 	private PercussionType percussionType;
-	private String material;
-	private String drumheadMaterial;
-	
-	
-	public PercussionInstrument() {
-		
-	}
+	private String shellMaterial;
+	private String drumHeadMaterial;
+    private Boolean tunable;
 
 
-	public PercussionInstrument(UUID id, String name, String brand, InstrumentType type, PercussionType percussionType,
-			String material, String drumheadMaterial) {
-		super(id, name, brand, type);
-		this.percussionType = percussionType;
-		this.material = material;
-		this.drumheadMaterial = drumheadMaterial;
-	}
-
-
-	public PercussionType getPercussionType() {
-		return percussionType;
-	}
-
-
-	public void setPercussionType(PercussionType percussionType) {
-		this.percussionType = percussionType;
-	}
-
-
-	public String getMaterial() {
-		return material;
-	}
-
-
-	public void setMaterial(String material) {
-		this.material = material;
-	}
-
-
-	public String getDrumheadMaterial() {
-		return drumheadMaterial;
-	}
-
-
-	public void setDrumheadMaterial(String drumheadMaterial) {
-		this.drumheadMaterial = drumheadMaterial;
-	}
-	
-	
-	 
-	
+    public PercussionInstrument(UUID id, String name, String brand, Integer releaseYear, String range, InstrumentType type, PercussionType percussionType, String shellMaterial, String drumHeadMaterial, Boolean tunable) {
+        super(id, name, brand, releaseYear, range, type);
+        this.percussionType = percussionType;
+        this.shellMaterial = shellMaterial;
+        this.drumHeadMaterial = drumHeadMaterial;
+        this.tunable = tunable;
+    }
 }

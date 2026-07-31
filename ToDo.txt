@@ -1,3 +1,4 @@
-- Add DTOs, change controller method params to receive them instead of the model classes;
-- Remove the InstrumentRegistry class;
+- Add DTOs, change controller method params to receive them instead of the domain entity classes;
 - Add MapStruct and map DTOs and model classes;
+- Add authentication and link users to uploaded instruments;
+- Restructure the domain classes for higher abstraction: Remove Guitar class, keep only fields that cover most instruments, deal with unique or intrinsic fields later down the line

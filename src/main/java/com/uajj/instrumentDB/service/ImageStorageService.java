@@ -33,7 +33,7 @@ public class ImageStorageService implements StorageService {
 
 	private final StorageProperties properties;
 
-    private InstrumentService service;
+    private final InstrumentService service;
 
 
 	public ImageStorageService(StorageProperties properties, InstrumentService service) {

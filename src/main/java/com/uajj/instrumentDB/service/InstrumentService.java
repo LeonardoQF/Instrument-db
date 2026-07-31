@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 @Service
 public class InstrumentService {
 
-	private InstrumentRepository repository;
+	private final InstrumentRepository repository;
 
 	public InstrumentService(InstrumentRepository repository) {
 		this.repository = repository;

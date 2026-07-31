@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import com.uajj.instrumentDB.dto.InstrumentDTO;
+import com.uajj.instrumentDB.dto.response.InstrumentResponseDTO;
+import com.uajj.instrumentDB.mapper.InstrumentMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +27,11 @@ import com.uajj.instrumentDB.service.InstrumentService;
 public class InstrumentController implements GenericController {
 
 	private final InstrumentService service;
+    private final InstrumentMapper mapper;
 
-	public InstrumentController(InstrumentService service) {
+	public InstrumentController(InstrumentService service, InstrumentMapper mapper) {
 		this.service = service;
+        this.mapper = mapper;
 	}
 
 	@GetMapping
@@ -41,23 +46,30 @@ public class InstrumentController implements GenericController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Instrument> addInstrument(@RequestBody(required = true) Instrument instrument) {
-		Instrument savedInstrument = service.save(instrument);
+	public ResponseEntity<InstrumentResponseDTO> addInstrument(@RequestBody(required = true) InstrumentDTO instrumentDto) {
+
+        Instrument savedInstrument = service.save(mapper.toEntity(instrumentDto));
 
 		URI uri = generateURI(savedInstrument.getId().toString());
 
-		return ResponseEntity.created(uri).body(instrument);
+        //Return a ResponseDTO
+		return ResponseEntity.created(uri).body(mapper.toResponseDto(savedInstrument));
 	}
 
 	@GetMapping("/filter")
-	public List<Instrument> getAllInstrumentsByType(@RequestParam(required = true, name = "type") String type) {
+	public ResponseEntity<List<InstrumentResponseDTO>> getAllInstrumentsByType(@RequestParam(required = true, name = "type") String type) {
 		String upperCaseType = type.toUpperCase();
-		return service.findAllByType(InstrumentType.valueOf(upperCaseType));
+
+        List<InstrumentResponseDTO> instrumentsDto = service.findAllByType(InstrumentType.valueOf(upperCaseType)).stream().map(mapper::toResponseDto).toList();
+
+		return ResponseEntity.ok().body(instrumentsDto);
 	}
 
 	@GetMapping("/search")
-	public List<Instrument> search(@RequestParam(required = true, name = "text") String text) {
-		return service.searchByAnyText(text);
+	public ResponseEntity<List<InstrumentResponseDTO>> search(@RequestParam(required = true, name = "text") String text) {
+		List<InstrumentResponseDTO> instrumentsDto = service.searchByAnyText(text).stream().map(mapper::toResponseDto).toList();
+
+        return ResponseEntity.ok().body(instrumentsDto);
 	}
 
 }
