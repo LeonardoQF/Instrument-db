@@ -2,7 +2,6 @@ package com.uajj.instrumentDB.model.entities;
 
 import java.util.UUID;
 
-import com.uajj.instrumentDB.model.entities.enums.GuitarType;
 import com.uajj.instrumentDB.model.entities.enums.InstrumentType;
 import com.uajj.instrumentDB.model.entities.enums.StringMaterial;
 
@@ -23,7 +22,7 @@ public class StringInstrument extends Instrument {
     private String neckWood;
     private String tuning;
     private Boolean acoustic;
-    private Boolean Electric;
+    private Boolean electric;
     private String pickups;
     private String family;
 
@@ -38,7 +37,7 @@ public class StringInstrument extends Instrument {
         this.neckWood = neckWood;
         this.tuning = tuning;
         this.acoustic = acoustic;
-        Electric = electric;
+        this.electric = electric;
         this.pickups = pickups;
         this.family = family;
         this.stringMaterial = stringMaterial;
