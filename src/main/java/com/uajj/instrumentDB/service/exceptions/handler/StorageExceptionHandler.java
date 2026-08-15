@@ -1,0 +1,23 @@
+package com.uajj.instrumentDB.service.exceptions.handler;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.uajj.instrumentDB.service.exceptions.StandardHttpError;
+import com.uajj.instrumentDB.service.exceptions.StorageException;
+import com.uajj.instrumentDB.util.ExceptionHandling;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@RestControllerAdvice
+@ControllerAdvice
+public class StorageExceptionHandler {
+
+	@ExceptionHandler(exception = StorageException.class)
+	public ResponseEntity<StandardHttpError> resolveStorageException(StorageException e, HttpServletRequest request) {
+		return ExceptionHandling.populateStandardHttpError(e, request, HttpStatus.BAD_REQUEST);
+	}
+}

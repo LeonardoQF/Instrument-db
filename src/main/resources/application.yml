@@ -7,8 +7,34 @@ spring:
     password:
     driver-class-name: org.h2.Driver
   h2:
-    console:      enabled: true
+    console:
+      enabled: true
       path: /db
   jpa:
     show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+
+springdoc:
+  swagger-ui:
+    path: /docs
+        
+        
+      
+config: 
+  storage:
+    path: ${INSTRUMENT_DB_PATH:/home/leonardo/Coding/Storage} #Add the variable to STS environment variables (Run -> Run configurations)
+    supportedImageTypes:
+      - .jpg
+      - .jpeg
+      - .png
+    maxImageSizeBytes: 5000000
+    maxImagesPerFolder: 5
+
+  
+  
       

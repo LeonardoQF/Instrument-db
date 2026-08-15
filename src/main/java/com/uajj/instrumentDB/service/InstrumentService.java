@@ -1,0 +1,60 @@
+package com.uajj.instrumentDB.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import com.uajj.instrumentDB.model.entities.Instrument;
+import com.uajj.instrumentDB.model.entities.enums.InstrumentType;
+import com.uajj.instrumentDB.repository.InstrumentRepository;
+import com.uajj.instrumentDB.service.exceptions.NoSuchInstrumentException;
+
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
+public class InstrumentService {
+
+	private final InstrumentRepository repository;
+
+	public InstrumentService(InstrumentRepository repository) {
+		this.repository = repository;
+	}
+
+	public Instrument save(Instrument instrument) {
+		if (instrument == null)
+			throw new IllegalArgumentException("Instrument cannot be null");
+
+		return repository.save(instrument);
+	}
+
+	public List<Instrument> saveAll(List<Instrument> instruments) {
+		if (instruments == null || instruments.isEmpty())
+			throw new IllegalArgumentException("Instrument list cannot be null");
+
+		return repository.saveAll(instruments);
+	}
+
+	public Instrument findById(UUID id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new NoSuchInstrumentException("Instrument with the specified ID not found"));
+	}
+	
+	public boolean existsById(UUID id) {
+		return repository.existsById(id);
+	}
+
+	public List<Instrument> findAll() {
+		return repository.findAll();
+	}
+
+	public List<Instrument> findAllByType(InstrumentType type) {
+		return repository.findByType(type);
+	}
+
+	public List<Instrument> searchByAnyText(String text) {
+		return repository.searchByAnyText(text);
+	}
+
+}
