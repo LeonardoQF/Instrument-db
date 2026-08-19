@@ -30,7 +30,6 @@ public class ImageUploadController implements GenericController {
 		this.instrumentService = instrumentService;
 	}
 
-    //TODO Change HTTP status code from 200 OK to 201 CREATED
 	@PostMapping
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile image, @RequestParam("id") String id,
 			@RequestParam("instrumentType") String instrumentType) {
